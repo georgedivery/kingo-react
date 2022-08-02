@@ -19,6 +19,10 @@ import PopupErrorMessage from './components/popupErrorMessage'
 import PopupOpenMetaMask from './components/popupOpenMetaMask'
 import BtnConnectMetaMask from './components/btnConnectMetaMask'
 
+import getContractAddress from './services/getContractAddress'
+import getBalance from './services/getBalance'
+import getWithdraw from './services/getWithdraw'
+
 function App() {
 
     const [metaMaskAccount, setMetaMaskAccount] = useState(null);
@@ -29,15 +33,11 @@ function App() {
     const [popupOpenlMetamask, setPopupOpenlMetamask] = useState(false);
     const [boxPtrnBalance, setBoxPtrnBalance] = useState(false);
     const [balanceData, setBalanceData] = useState({});
+    const [contractAddress, setContractAddress] = useState();
 
     useEffect(() => {
-
-        return function cleanup() {
-            if (metaMaskAccount !== null) {
-                setMetaMaskAccount(null)
-            }
-        };
-    }, [metaMaskAccount]); 
+        getContractAddress().then(res => setContractAddress(res.data))
+    }, [])
 
     const connectToMetaMask = () => {
         if (typeof window.ethereum !== 'undefined') {
@@ -58,7 +58,7 @@ function App() {
     }
 
     const handleAccountsChanged = (accounts) => {
-        const account = accounts[0]; 
+        const account = accounts[0];
         setMetaMaskAccount(account)
     }
 
@@ -79,51 +79,29 @@ function App() {
         setPtrnKey(e.target.value)
     }
 
-    const handlecheckBalance = () => { 
-
-        fetch('https://ptrn-backend.herokuapp.com/api/balance/', {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'Upi': ptrnKey
-            },
-        }).then(response => { 
-            if (!response.ok) {
-                setPopupError(true); 
-            }
-
-            if (response.ok) {
-                setBoxPtrnBalance(true)
-            }
-            return response.json();
-        }).then(data => {
-            console.log(data)
-            setBalanceData(data)
-            setPopupErrorMessage(data)
-        }).catch((err) => {
-            console.log(err); 
-        });
+    const handlecheckBalance = () => {
+        getBalance(ptrnKey).then(res => {
+            console.log(res.data)
+            setBoxPtrnBalance(true)
+            setBalanceData(res.data)
+        }).catch(err => {
+            setPopupError(true);
+            setPopupErrorMessage(err.response.data)
+            console.log(err)
+        })
     }
 
     const handleWithdraw = () => {
-        console.log(metaMaskAccount)
-        fetch('https://ptrn-backend.herokuapp.com/api/withdraw/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'Upi': ptrnKey,
-                'Wallet': metaMaskAccount
-            },
-        }).then(response => {
-            return response.json();
-        }).then(data => {
-            setPopupError(true);
-            setPopupErrorMessage(data)
-            console.log(data)
-        }).catch((err) => {
-            console.log(err);
-        });
+        getWithdraw(ptrnKey, metaMaskAccount)
+            .then(res => {
+                console.log(res)
+                setPopupError(true);
+                setPopupErrorMessage(res.data)
+            }).catch(err => {
+                setPopupError(true);
+                setPopupErrorMessage(err.response.data)
+                console.log(err)
+            })
     }
 
     return (
@@ -154,6 +132,7 @@ function App() {
                     <section className="section-pathearn">
                         <div className="section-bg" style={{ backgroundImage: `url(${backgroundImage})` }}>
                         </div>
+
                         <div className="shell">
                             <div className="section-inner">
                                 <div className="section-head">
@@ -161,6 +140,13 @@ function App() {
                                         <img src={pathearnLogo} alt="#" />
                                         PATHEARN DASHBOARD
                                     </h2>
+
+                                    {contractAddress &&
+                                        <p>
+                                            {Object.keys(contractAddress)}: &nbsp;
+                                            <span>{contractAddress['PTRN contract address']}</span>
+                                        </p>
+                                    }
                                 </div>
 
                                 <div className="section-box-wrapper">
@@ -173,7 +159,7 @@ function App() {
                                             handlePtrnKeyInputChange={handlePtrnKeyInputChange}
                                         />}
 
-                                    {metaMaskAccount !== null && boxPtrnBalance &&  
+                                    {metaMaskAccount !== null && boxPtrnBalance &&
                                         <BoxPtrnBalance
                                             balanceData={balanceData}
                                             handleWithdraw={handleWithdraw}
@@ -186,14 +172,12 @@ function App() {
                         </div>
                     </section>
 
-
                     {popupInstallMetamask && <PopupInstallMetaMask handleClosePopupInstallMetamask={handleClosePopupInstallMetamask} />}
 
                     {popupOpenlMetamask && <PopupOpenMetaMask handleClosePopupOpenMetaMask={handleClosePopupOpenMetaMask} />}
 
                     {popupError && <PopupErrorMessage handleClosePopupError={handleClosePopupError} message={popupErrorMessage} />}
                 </div>
-
 
             </div>
         </div>

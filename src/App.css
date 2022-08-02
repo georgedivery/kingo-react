@@ -259,12 +259,15 @@ blockquote:last-child { margin-bottom: 0; }
 
 .section-pathearn { min-height: 100vh; position: relative; display: flex; align-items: center; padding: 100px 0 20px; }
 .section-pathearn .section-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.55; }
-.section-pathearn .shell { position: relative; z-index: 1; width: 100%; }
-.section-pathearn .section-title { text-align: center; }
-.section-pathearn .section-head { padding-bottom: 60px; }
+.section-pathearn .shell { position: relative; z-index: 1; width: 100%; } 
+.section-pathearn .section-head { text-align: center; padding-bottom: 60px; } 
 
 @media screen and (max-width:1600px) { 
 	.section-pathearn .section-head { padding-bottom: 50px; } 
+}
+
+@media screen and (max-width:767px) {
+	.section-pathearn .section-head p span { display: block; width: 100%; overflow: auto; padding-bottom: 10px; } 
 }
 
 @media screen and (max-width:600px) {
