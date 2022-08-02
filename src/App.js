@@ -40,16 +40,10 @@ function App() {
     }, [])
 
     const connectToMetaMask = () => {
-        const { ethereum } = window;
-        if (!ethereum) {
-            setPopupInstallMetamask(true)
-            console.log('err')
-        } else {
-            ethereum.request({ method: 'eth_requestAccounts' })
-                .then(res => {
-                    setMetaMaskAccount(res[0])
-                    console.log(res)
-                })
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum
+                .request({ method: 'eth_requestAccounts' })
+                .then(handleAccountsChanged)
                 .catch((err) => {
                     if (err.code === -32002) {
                         setPopupOpenlMetamask(true);
@@ -57,7 +51,15 @@ function App() {
                         console.error(err);
                     }
                 })
+        } else {
+            setPopupInstallMetamask(true)
+            console.log('err')
         }
+    }
+
+    const handleAccountsChanged = (accounts) => {
+        const account = accounts[0];
+        setMetaMaskAccount(account)
     }
 
     const handleClosePopupOpenMetaMask = () => {
@@ -101,6 +103,7 @@ function App() {
                 console.log(err)
             })
     }
+
 
     return (
         <div className="App">
