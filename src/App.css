@@ -48,9 +48,8 @@ input[type="color"],
 textarea,
 a[href^="tel"] { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button { display: none; -webkit-appearance: none; }
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+input[type="number"]::-webkit-outer-spin-button { display: none; }
+ 
 textarea { overflow: auto; resize: none; -webkit-overflow-scrolling: touch; }
 button,
 input,
@@ -186,6 +185,19 @@ blockquote:last-child { margin-bottom: 0; }
 
 .field { width: 100%; background: #0000000B; height: 70px; padding: 0 20px; border: 1px solid #0000000B; }
 .field:focus { border: 1px solid #333; }
+
+.menu-link { display: inline-block; text-decoration: none; margin-right: 45px; text-transform: uppercase; }
+
+@media screen and (max-width:767px) { 
+	.menu-link { margin-right: 0px; position: relative; top: 4px; }
+	.header .btn-connect-metamask { display: none; }
+
+	.menu-top-container { display: none; }
+} 
+
+@media screen and (max-width:480px) { 
+	.menu-link { font-size: 14px; margin-right: -10px; } 
+} 
 
 /* ------------------------------------------------------------ *\
 	Footer

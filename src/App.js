@@ -123,6 +123,8 @@ function App() {
                                 </ul>
                             </div>
 
+                            <a href="https://kingo.ai/instructions/" className='menu-link' target="_blank">Instructions</a>
+
                             <BtnConnectMetaMask metaMaskAccount={metaMaskAccount} onClick={connectToMetaMask} />
                         </div>
 
