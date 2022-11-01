@@ -38,8 +38,14 @@ function App() {
 
     useEffect(() => {
         getContractAddress()
-            .then(res => setContractAddress(res))
-            .catch(err => { 
+            .then(res => {
+                setContractAddress(res.data)
+
+                if (res.status === 503) {
+                    setServerErr(true)
+                }
+            })
+            .catch(err => {
                 setServerErr(true)
             })
     }, [])
@@ -128,7 +134,7 @@ function App() {
                                 </ul>
                             </div>
 
-                            <a href="https://kingo.ai/instructions/" className='menu-link' target="_blank">Instructions</a>
+                            <a href="https://kingo.ai/instructions/" className='menu-link' target="_blank" rel="noreferrer" >Instructions</a>
 
                             <BtnConnectMetaMask metaMaskAccount={metaMaskAccount} onClick={connectToMetaMask} />
                         </div>
@@ -161,6 +167,8 @@ function App() {
                                             Service temporary unavailable.
                                         </p>
                                     }
+
+
                                 </div>
 
                                 <div className="section-box-wrapper">
