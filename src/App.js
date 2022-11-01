@@ -25,6 +25,341 @@ import getWithdraw from './services/getWithdraw'
 
 function App() {
 
+    const contract = '0x6E2569DBbA0b94710FD07284f3Da54391937a348';
+    const ABI = [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "previousOwner",
+                    "type": "address"
+                },
+                {
+                    "indexed": true,
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "beneficiary_",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256[]",
+                    "name": "amounts",
+                    "type": "uint256[]"
+                },
+                {
+                    "internalType": "uint256[]",
+                    "name": "releaseDates",
+                    "type": "uint256[]"
+                }
+            ],
+            "name": "addBeneficiary",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "beneficiary_",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "amount",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "releaseDate",
+                    "type": "uint256"
+                }
+            ],
+            "name": "addPaymentToBeneficiary",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "beneficiary_",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "reason",
+                    "type": "string"
+                }
+            ],
+            "name": "cancelPaymentsToBeneficiary",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newBeneficiary",
+                    "type": "address"
+                }
+            ],
+            "name": "changeBeneficiaryWallet",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "beneficiary_",
+                    "type": "address"
+                }
+            ],
+            "name": "release",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "wallet",
+                    "type": "address"
+                }
+            ],
+            "name": "transferExcessBalance",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "newOwner",
+                    "type": "address"
+                }
+            ],
+            "name": "transferOwnership",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "contract DummyToken",
+                    "name": "token_",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "beneficiary_",
+                    "type": "address"
+                }
+            ],
+            "name": "beneficiary",
+            "outputs": [
+                {
+                    "internalType": "uint256[3][]",
+                    "name": "",
+                    "type": "uint256[3][]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "currentBalance",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "currentNonUtilizedAmount",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getCanceledPaymentsAddresses",
+            "outputs": [
+                {
+                    "internalType": "address[]",
+                    "name": "",
+                    "type": "address[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "beneficiary_",
+                    "type": "address"
+                }
+            ],
+            "name": "getReasonForCancellation",
+            "outputs": [
+                {
+                    "internalType": "string[]",
+                    "name": "",
+                    "type": "string[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "returnBeneficiaryList",
+            "outputs": [
+                {
+                    "internalType": "address[]",
+                    "name": "",
+                    "type": "address[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "symbol",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "timeNow",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "token",
+            "outputs": [
+                {
+                    "internalType": "contract DummyToken",
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "totalUnreleasedPayments",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+
+    // RPC PROVIDER - https://polygon-rpc.com
+
+    // Функциите, които трябва да се викат:
+    // release(address)
+    // beneficiary(address)
+
+    // Втората не иска подписване и може директно да се вика с call()
+
+    // С нея можеш да започнеш за да тестваш комуникацията с контракта
+
     const [metaMaskAccount, setMetaMaskAccount] = useState(null);
     const [ptrnKey, setPtrnKey] = useState(null);
     const [popupInstallMetamask, setPopupInstallMetamask] = useState(false);
