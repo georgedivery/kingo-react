@@ -41,7 +41,6 @@ function App() {
             .then(res => setContractAddress(res))
             .catch(err => { 
                 setServerErr(true)
-                setContractAddress(err.message)
             })
     }, [])
 
