@@ -34,9 +34,15 @@ function App() {
     const [boxPtrnBalance, setBoxPtrnBalance] = useState(false);
     const [balanceData, setBalanceData] = useState({});
     const [contractAddress, setContractAddress] = useState();
+    const [serverErr, setServerErr] = useState(false);
 
     useEffect(() => {
-        getContractAddress().then(res => setContractAddress(res.data))
+        getContractAddress()
+            .then(res => setContractAddress(res))
+            .catch(err => { 
+                setServerErr(true)
+                setContractAddress(err.message)
+            })
     }, [])
 
     const connectToMetaMask = () => {
@@ -144,10 +150,16 @@ function App() {
                                         PATHEARN DASHBOARD
                                     </h2>
 
-                                    {contractAddress &&
+                                    {contractAddress && !serverErr &&
                                         <p>
                                             {Object.keys(contractAddress)}: &nbsp;
                                             <span>{contractAddress['PTRN contract address']}</span>
+                                        </p>
+                                    }
+
+                                    {serverErr &&
+                                        <p>
+                                            Service temporary unavailable.
                                         </p>
                                     }
                                 </div>
