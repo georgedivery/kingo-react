@@ -91,8 +91,7 @@ function App() {
     }
 
     const handlecheckBalance = () => {
-        getBalance(ptrnKey).then(res => {
-            console.log(res.data)
+        getBalance(ptrnKey).then(res => { 
             setBoxPtrnBalance(true)
             setBalanceData(res.data)
         }).catch(err => {
@@ -104,8 +103,7 @@ function App() {
 
     const handleWithdraw = () => {
         getWithdraw(ptrnKey, metaMaskAccount)
-            .then(res => {
-                console.log(res)
+            .then(res => { 
                 setPopupError(true);
                 setPopupErrorMessage(res.data)
             }).catch(err => {
@@ -198,7 +196,7 @@ function App() {
 
                     {popupOpenlMetamask && <PopupOpenMetaMask handleClosePopupOpenMetaMask={handleClosePopupOpenMetaMask} />}
 
-                    {popupError && <PopupErrorMessage handleClosePopupError={handleClosePopupError} message={popupErrorMessage} />}
+                    {popupError && <PopupErrorMessage handleClosePopupError={handleClosePopupError} serverErr={serverErr} message={popupErrorMessage} />}
                 </div>
 
             </div>
