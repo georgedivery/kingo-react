@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const getContractAddress = () => { 
+const getContractPTRNAddress = () => { 
     return axios.get('https://ptrn-backend.herokuapp.com/api/contract/')
 }
 
-export default getContractAddress;
+export default getContractPTRNAddress;
