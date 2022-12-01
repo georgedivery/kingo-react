@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getWithdraw = (ptrnKey, metaMaskAccount) => {
-    console.log(metaMaskAccount) 
+    // console.log(metaMaskAccount) 
 
     return axios({
         method: 'post',

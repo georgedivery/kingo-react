@@ -4,11 +4,11 @@ function BtnConnectMetaMask({
     metaMaskAccount
 }) {
     return (
-        <button disabled={metaMaskAccount !== null} onClick={onClick} className="btn btn-connect-metamask">
-            {metaMaskAccount !== null &&
-                <span>{metaMaskAccount}</span>
+        <button disabled={metaMaskAccount !== ''} onClick={onClick} className="btn btn-connect-metamask">
+            {metaMaskAccount !== '' &&
+                <span>{`${metaMaskAccount.substring(0, 3)}...${metaMaskAccount.substr(metaMaskAccount.length - 3)}`}</span>
             }
-            {metaMaskAccount === null &&
+            {metaMaskAccount === '' &&
                 <>Connect</>
             }
 

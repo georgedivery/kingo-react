@@ -2,7 +2,7 @@
 function BoxPtrnKey({
     handlePtrnKeyInputChange,
     handlecheckBalance,
-    handleWithdraw
+    balanceLoader
 }) {
 
     return (
@@ -21,12 +21,9 @@ function BoxPtrnKey({
 
                 <p className="text_center list-buttons">
                     <button onClick={handlecheckBalance} className="btn  " id="btn-check-balance">
-                        CHECK BALANCE
+                        {balanceLoader && <div class="loader"></div>}
+                        {!balanceLoader && <>CHECK BALANCE</>} 
                     </button>
-
-                    {/* <button onClick={handleWithdraw} className="btn btn_small" id="btn-withdraw">
-                        WITHDRAW
-                    </button> */}
                 </p>
             </div>
         </div>
