@@ -4,7 +4,7 @@ import backgroundImage from '../assets/images/Rectangle-1508.jpg';
 
 import { AppContext } from "../context";
 
-import { useState, useRef, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import BoxConnectWallet from '../components/boxConnectWallet';
 import BoxPtrnBalance from '../components/boxPtrnBalance';
@@ -16,7 +16,7 @@ import PopupOpenMetaMask from '../components/popupOpenMetaMask';
 
 import Header from '../components/Header';
 
-// import getContractPTRNAddress from '../services/getContractPTRNAddress;'
+import getContractPTRNAddress from '../services/getContractPTRNAddress';
 import getBalance from '../services/getBalance';
 import getWithdraw from '../services/getWithdraw';
 import { getBeneficiary } from '../services/smartActions';
@@ -36,17 +36,17 @@ function Home() {
     const [balanceLoader, setBalanceLoader] = useState(false);
 
     useEffect(() => {
-        // getContractPTRNAddress()
-        //     .then(res => {
-        //         setContractPTRNAddress(res.data)
+        getContractPTRNAddress()
+            .then(res => {
+                setContractPTRNAddress(res.data)
 
-        //         if (res.status === 503) {
-        //             setServerErr(true)
-        //         }
-        //     })
-        //     .catch(err => {
-        //         setServerErr(true)
-        //     })
+                if (res.status === 503) {
+                    setServerErr(true)
+                }
+            })
+            .catch(err => {
+                setServerErr(true)
+            })
     }, [])
 
     useEffect(() => {
@@ -146,9 +146,8 @@ function Home() {
             setBalanceData(res.data)
         }).catch(err => {
             setPopupError(true);
-            setBalanceLoader(false)
-            setPopupErrorMessage(err.response.data)
-            console.log(err)
+            setBalanceLoader(false) 
+            setPopupErrorMessage(err.message)
         })
     }
 
@@ -181,10 +180,10 @@ function Home() {
                                         PATHEARN DASHBOARD
                                     </h2>
 
-                                    {contractAddress && !serverErr &&
+                                    {contractPTRNAddress && !serverErr &&
                                         <p>
-                                            {Object.keys(contractAddress)}: &nbsp;
-                                            <span>{contractAddress['PTRN contract address']}</span>
+                                            {Object.keys(contractPTRNAddress)}: &nbsp;
+                                            <span>{contractPTRNAddress['PTRN contract address']}</span>
                                         </p>
                                     }
 

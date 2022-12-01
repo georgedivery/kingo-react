@@ -20,6 +20,7 @@ function PersonalVestingPage() {
     const inputRef = useRef(null);
     const [widgetCheckAddress, setWidgetCheckAddress] = useState(false);
     const [hasAmountToWithraw, setHasAmountToWithraw] = useState(false);
+    const [changeWalletLoader, setChangeWalletLoader] = useState(false);
 
     const navigate = useNavigate();
 
@@ -52,18 +53,19 @@ function PersonalVestingPage() {
         })
     }
 
-    const handleChangeBeneficiaryWallet = () => {
+    const handleChangeBeneficiaryWallet = () => { 
         const newWallet = inputRef.current.value
-        checkWallet(newWallet).then(res => {
+        checkWallet(newWallet).then(res => { 
             if (!res) {
-                setWidgetCheckAddress(true)
+                setWidgetCheckAddress(true)  
             } else {
-                setWidgetCheckAddress(false)
+                setWidgetCheckAddress(true)
                 changeBeneficiaryWallet(metaMaskAccount, newWallet)
                     .then(res => {
-                        // console.log(res)
+                        setChangeWalletLoader(false) 
                     }).catch(err => {
                         console.log(err)
+                        setChangeWalletLoader(false)
                     })
             }
         })
@@ -178,7 +180,11 @@ function PersonalVestingPage() {
                                                 <div className="widget-change-wallet-address">
                                                     <input className='field' placeholder='Enter new wallet address' ref={inputRef} type="text" id="new-wallet-address" />
 
-                                                    <button className="btn" onClick={handleChangeBeneficiaryWallet}>Change</button>
+                                                    <button className="btn" onClick={handleChangeBeneficiaryWallet}>
+                                                        {changeWalletLoader && <div className="loader"></div>}
+                                                        {!changeWalletLoader && <>Change</>} 
+                                                        
+                                                        </button>
 
                                                     {widgetCheckAddress &&
                                                         <p>Please enter valid address!</p>

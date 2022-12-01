@@ -21,7 +21,7 @@ function BoxPtrnKey({
 
                 <p className="text_center list-buttons">
                     <button onClick={handlecheckBalance} className="btn  " id="btn-check-balance">
-                        {balanceLoader && <div class="loader"></div>}
+                        {balanceLoader && <div className="loader"></div>}
                         {!balanceLoader && <>CHECK BALANCE</>} 
                     </button>
                 </p>
