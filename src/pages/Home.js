@@ -175,18 +175,26 @@ function Home() {
 
                         <div className="shell">
                             <div className="section-inner">
-                                <div className="section-head">
+                            <div className="section-head">
                                     <h2 className="section-title">
                                         <img src={pathearnLogo} alt="#" />
                                         PATHEARN DASHBOARD
                                     </h2>
 
-                                    {contractPTRNAddress &&
+                                    {contractAddress && !serverErr &&
                                         <p>
-                                            {Object.keys(contractPTRNAddress)}: &nbsp;
-                                            <span>{contractPTRNAddress['PTRN contract address']}</span>
+                                            {Object.keys(contractAddress)}: &nbsp;
+                                            <span>{contractAddress['PTRN contract address']}</span>
                                         </p>
                                     }
+
+                                    {serverErr &&
+                                        <p>
+                                            Service temporary unavailable.
+                                        </p>
+                                    }
+
+
                                 </div>
 
                                 <div className="section-box-wrapper">
