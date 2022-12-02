@@ -1,25 +1,28 @@
-import { useContext } from 'react';
+import { useState, useContext } from 'react';
 import { AppContext } from "../context";
 import logo from '../assets/images/Kingo-logo-color.png';
 import { Link } from "react-router-dom";
 import BtnConnectMetaMask from './btnConnectMetaMask';
 
 function Header({ connectToMetaMask }) {
-    const { state } = useContext(AppContext); 
-    // console.log(state)
+    const [menu, setMenu] = useState(false);
+    const { state } = useContext(AppContext);
+    const toggleMenu = () => {
+        setMenu(!menu);
+    }
 
     return (
         <header className="header">
             <div className="shell">
-                <a className="logo" href="https://kingo.ai/"> 
+                <a className="logo" href="https://kingo.ai/">
                     <img src={logo} alt="Kingo Logo" />
                 </a>
 
-                <div className="navigation">
+                <div className={`navigation ${menu ? "open" : null} `} >
                     <div id="navbar" className="menu-top-container">
                         <ul id="menu-top" className="nav">
                             <li id="menu-item-29" className="menu-item">
-                                <Link to={'/ptrn'}>Home</Link> 
+                                <Link to={'/ptrn'}>Home</Link>
                             </li>
 
                             <li>
@@ -33,8 +36,13 @@ function Header({ connectToMetaMask }) {
                         </ul>
                     </div>
 
-                    <BtnConnectMetaMask metaMaskAccount={state.metaMaskWallet} onClick={connectToMetaMask} />
+                    <BtnConnectMetaMask metaMaskAccount={state.metaMaskWallet} onClick={connectToMetaMask} /> 
+                </div>
 
+                <div onClick={toggleMenu} className={`btn-burger ${menu ? "open" : null} `}>
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
 
             </div>

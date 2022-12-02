@@ -178,6 +178,11 @@ function PersonalVestingPage() {
                                                 </h3>
 
                                                 <p className='current-wallet' >Your current wallet is: <span>{state.metaMaskWallet}</span></p>
+                                                <p className='current-wallet mobile' >Your current wallet is:
+                                                   
+
+                                                        <span>{`${state.metaMaskWallet.substring(0, 5)}...${state.metaMaskWallet.substr(state.metaMaskWallet.length - 5)}`}</span>
+                                                </p>
 
                                                 <div className="widget-change-wallet-address">
                                                     <input className='field' placeholder='Enter new wallet address' ref={inputRef} type="text" id="new-wallet-address" />

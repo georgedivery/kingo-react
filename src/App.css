@@ -486,11 +486,38 @@ blockquote:last-child {
 	z-index: 10;
 }
 
+
+
 .header .shell {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	position: relative;
+
 }
+
+.header .shell:before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #fff;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+}
+
+.header .logo {
+	position: relative;
+	z-index: 2;
+}
+
+.header .navigation {
+	z-index: 2;
+}
+
+
+
 
 
 
@@ -558,7 +585,7 @@ blockquote:last-child {
 
 @media screen and (max-width:767px) {
 
-	.btn-connect-metamask {
+	.header .btn-connect-metamask {
 		display: none;
 	}
 
@@ -578,8 +605,29 @@ blockquote:last-child {
 }
 
 @media screen and (max-width:552px) {
-	.navigation .menu-top-container {
-		display: none;
+	.navigation {
+		position: fixed;
+		top: -100%;
+		left: 0;
+		width: 100%;
+		padding: 20px;
+		background: #fff;
+		transition: all .3s;
+	}
+
+	.header .navigation {
+		z-index: 1;
+	}
+
+	.header .shell:before {
+		z-index: 2;
+	}
+
+
+	.navigation.open {
+
+		top: 74px;
+
 	}
 }
 
@@ -684,6 +732,10 @@ blockquote:last-child {
 	font-size: 14px;
 }
 
+.section-pathearn .section-change-wallet .current-wallet.mobile {
+	display: none;
+}
+
 .section-pathearn .section-change-wallet .current-wallet span {
 	display: block;
 }
@@ -700,6 +752,14 @@ blockquote:last-child {
 }
 
 @media screen and (max-width:767px) {
+	.section-pathearn .section-change-wallet .current-wallet {
+		display: none;
+	}
+
+	.section-pathearn .section-change-wallet .current-wallet.mobile {
+		display: block;
+	}
+
 	.section-pathearn .section-head p span {
 		display: block;
 		width: 100%;
@@ -977,7 +1037,27 @@ blockquote:last-child {
 
 .widget-change-wallet-address .btn {
 	width: 170px;
+	padding: 20px;
 }
+
+@media (max-width: 767px) {
+	.widget-change-wallet-address {
+		flex-wrap: wrap;
+	}
+
+	.widget-change-wallet-address input {
+		width: calc(100%);
+		margin-bottom: 20px;
+	}
+
+	.widget-change-wallet-address .btn {
+		width: 170px;
+		padding: 20px;
+	}
+
+
+}
+
 
 .loader {
 	border: 3px solid #f3f3f3;
@@ -1009,5 +1089,64 @@ blockquote:last-child {
 
 	100% {
 		transform: rotate(360deg);
+	}
+}
+
+.btn-burger {
+	z-index: 3;
+	transition: all .3s;
+	right: 50px;
+	display: none;
+	width: 32px;
+	height: 28px;
+	transform: rotate(0deg);
+	cursor: pointer;
+}
+
+
+.btn-burger span {
+	display: block;
+	position: absolute;
+	height: 3px;
+	width: 100%;
+	background: #000;
+	opacity: 1;
+	left: 0;
+	transform: rotate(0deg);
+	transition: .25s ease-in-out;
+}
+
+.btn-burger span:nth-child(1) {
+	top: 0px;
+}
+
+.btn-burger span:nth-child(2) {
+	top: 13px;
+}
+
+.btn-burger span:nth-child(3) {
+	top: 25px;
+}
+
+
+.btn-burger.open span:nth-child(1) {
+	top: 13px;
+	transform: rotate(135deg);
+}
+
+.btn-burger.open span:nth-child(2) {
+	opacity: 0;
+	left: -60px;
+}
+
+.btn-burger.open span:nth-child(3) {
+	top: 13px;
+	transform: rotate(-135deg);
+}
+
+
+@media (max-width: 552px) {
+	.btn-burger {
+		display: block;
 	}
 }
