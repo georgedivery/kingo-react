@@ -20,10 +20,11 @@ function App() {
 
     return (
         <AppContext.Provider value={{ state, dispatch }} >
-            <BrowserRouter>
+           
+            <BrowserRouter basename='/ptrn/'>
                 <Routes>
-                    <Route exact path="/ptrn" element={<Home />} />
-                    <Route exact path="/ptrn/personal-vesting" element={<PersonalVestingPage />} />
+                    <Route exact path="/" element={<Home />} />
+                    <Route exact path="/personal-vesting" element={<PersonalVestingPage />} />
                     <Route path="*" element={<NoPage />} />
                 </Routes>
             </BrowserRouter >

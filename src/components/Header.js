@@ -22,7 +22,7 @@ function Header({ connectToMetaMask }) {
                     <div id="navbar" className="menu-top-container">
                         <ul id="menu-top" className="nav">
                             <li id="menu-item-29" className="menu-item">
-                                <Link to={'/ptrn'}>Home</Link>
+                                <Link to={'/'}>Home</Link>
                             </li>
 
                             <li>
@@ -30,7 +30,7 @@ function Header({ connectToMetaMask }) {
                             </li>
 
                             {state.isInBeneficiaryList && <li>
-                                <Link to={'/ptrn/personal-vesting'}>PERSONAL VESTING</Link>
+                                <Link to={'/personal-vesting'}>PERSONAL VESTING</Link>
 
                             </li>}
                         </ul>

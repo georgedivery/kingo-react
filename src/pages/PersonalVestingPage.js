@@ -84,9 +84,8 @@ function PersonalVestingPage() {
                 setContractSymbol(res)
             })
 
-            getBeneficiary(metaMaskAccount).then(res => {
-                // filter for approved
-                console.log(res)
+            getBeneficiary(metaMaskAccount).then(res => { 
+                
                 const approved = res.some(x => {
                     const date = new Date(x[1] * 1000);
                     const today = new Date();
@@ -100,8 +99,8 @@ function PersonalVestingPage() {
                 const formattedRes = res.map(x => {
                     const amount = x[0] / 10 ** 18
                     const date = new Date(x[1] * 1000).toLocaleDateString();
-                    const withdrawn = `${x[2] == '0' ? "No" : "Yes"}`
-                    const approved = `${x[2] == '0' ? "No" : "Yes"}`
+                    const withdrawn = `${x[2] === '0' ? "No" : "Yes"}`
+                    const approved = `${x[2] === '0' ? "No" : "Yes"}`
 
                     return [amount, date, withdrawn, approved]
                 })
