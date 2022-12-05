@@ -1,8 +1,9 @@
 
 function BoxPtrnBalance({
     handleWithdraw,
-    balanceData
-}) { 
+    balanceData,
+    withdrawLoader
+}) {
 
     let {
         balance_for_next_withdraw,
@@ -11,7 +12,7 @@ function BoxPtrnBalance({
         hours_to_next_payment,
         minutes_to_next_payment
     } = balanceData;
-    
+
     return (
         <>
             {Object.keys(balanceData).length &&
@@ -66,7 +67,8 @@ function BoxPtrnBalance({
 
                                 <p className="text_right">
                                     <button onClick={handleWithdraw} className="btn" id="btn-withdraw">
-                                        WITHDRAW
+                                        {withdrawLoader && <div className="loader"></div>}
+                                        {!withdrawLoader && <>WITHDRAW</>} 
                                     </button>
                                 </p>
                             </div>

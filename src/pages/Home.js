@@ -34,6 +34,8 @@ function Home() {
     const [balanceData, setBalanceData] = useState({});
     const [contractPTRNAddress, setContractPTRNAddress] = useState();
     const [balanceLoader, setBalanceLoader] = useState(false);
+    const [withdrawLoader, setWithdrawLoader] = useState(false);
+    const [errPtrnKey, setErrPtrnKey] = useState(false);
 
     useEffect(() => {
         getContractPTRNAddress()
@@ -50,13 +52,15 @@ function Home() {
     }, [])
 
     useEffect(() => {
-        window.ethereum.on('accountsChanged', function (accounts) {
-            console.log('accountsChanged')
-            setMetaMaskAccount(accounts[0])
-            dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
-            checkBeneficiary(accounts[0])
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function (accounts) {
+                console.log('accountsChanged')
+                setMetaMaskAccount(accounts[0])
+                dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
+                checkBeneficiary(accounts[0])
 
-        })
+            })
+        }
     }, [])
 
     useEffect(() => {
@@ -139,27 +143,39 @@ function Home() {
     }
 
     const handlecheckBalance = () => {
-        setBalanceLoader(true)
-        getBalance(ptrnKey).then(res => {
-            setBoxPtrnBalance(true)
-            setBalanceLoader(false)
-            setBalanceData(res.data)
-        }).catch(err => {
-            setPopupError(true);
-            setBalanceLoader(false) 
-            setPopupErrorMessage(err.message)
-        })
+        if (ptrnKey === null) {
+            setErrPtrnKey(true)
+        } else if (ptrnKey.substring(0, 3).toLowerCase() === 'pat' ||
+            ptrnKey.substring(0, 3).toLowerCase() === 'lab' ||
+            ptrnKey.substring(0, 3).toLowerCase().lenght >= 3) {
+            setErrPtrnKey(false)
+            setBalanceLoader(true)
+            getBalance(ptrnKey).then(res => {
+                setBoxPtrnBalance(true)
+                setBalanceLoader(false)
+                setBalanceData(res.data)
+            }).catch(err => {
+                setPopupError(true);
+                setBalanceLoader(false)
+                setPopupErrorMessage(err.message)
+            })
+        } else {
+            setErrPtrnKey(true)
+        }
     }
 
     const handleWithdraw = () => {
+        setWithdrawLoader(true)
         getWithdraw(ptrnKey, metaMaskAccount)
             .then(res => {
                 setPopupError(true);
                 setPopupErrorMessage(res.data)
+                setWithdrawLoader(false)
             }).catch(err => {
                 setPopupError(true);
                 setPopupErrorMessage(err.response.data)
                 console.log(err)
+                setWithdrawLoader(false)
             })
     }
 
@@ -174,7 +190,7 @@ function Home() {
 
                         <div className="shell">
                             <div className="section-inner">
-                            <div className="section-head">
+                                <div className="section-head">
                                     <h2 className="section-title">
                                         <img src={pathearnLogo} alt="#" />
                                         PATHEARN DASHBOARD
@@ -203,12 +219,14 @@ function Home() {
                                     {state.metaMaskWallet !== '' && boxPtrnBalance === false &&
                                         <BoxPtrnKey
                                             balanceLoader={balanceLoader}
+                                            errPtrnKey={errPtrnKey}
                                             handlecheckBalance={handlecheckBalance}
                                             handlePtrnKeyInputChange={handlePtrnKeyInputChange}
                                         />}
 
                                     {state.metaMaskWallet !== '' && boxPtrnBalance &&
                                         <BoxPtrnBalance
+                                            withdrawLoader={withdrawLoader}
                                             balanceData={balanceData}
                                             handleWithdraw={handleWithdraw}
                                         />

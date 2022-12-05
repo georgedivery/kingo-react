@@ -901,13 +901,10 @@ blockquote:last-child {
 	text-align: left;
 	font-weight: 300;
 	font-size: 15px;
-	padding: 2px 0;
-	display: none;
+	padding: 2px 0; 
 }
 
-.section-box .form-control .error.active {
-	display: block;
-}
+ 
 
 .section-box .list-buttons {
 	display: flex;

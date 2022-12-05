@@ -26,17 +26,19 @@ function PersonalVestingPage() {
 
     useEffect(() => {
         if (state.isInBeneficiaryList === false) {
-            navigate("/"); 
+            navigate("/");
         }
     }, [state.isInBeneficiaryList])
 
     useEffect(() => {
-        window.ethereum.on('accountsChanged', function (accounts) {
-            console.log('accountsChanged')
-            setMetaMaskAccount(accounts[0])
-            dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
-            checkBeneficiary(accounts[0]);
-        })
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function (accounts) {
+                console.log('accountsChanged')
+                setMetaMaskAccount(accounts[0])
+                dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
+                checkBeneficiary(accounts[0]);
+            })
+        }
     }, [])
 
     const checkBeneficiary = (metaMaskAccount) => {
@@ -53,16 +55,16 @@ function PersonalVestingPage() {
         })
     }
 
-    const handleChangeBeneficiaryWallet = () => { 
+    const handleChangeBeneficiaryWallet = () => {
         const newWallet = inputRef.current.value
-        checkWallet(newWallet).then(res => { 
+        checkWallet(newWallet).then(res => {
             if (!res) {
-                setWidgetCheckAddress(true)  
+                setWidgetCheckAddress(true)
             } else {
                 setWidgetCheckAddress(true)
                 changeBeneficiaryWallet(metaMaskAccount, newWallet)
                     .then(res => {
-                        setChangeWalletLoader(false) 
+                        setChangeWalletLoader(false)
                     }).catch(err => {
                         console.log(err)
                         setChangeWalletLoader(false)
@@ -72,7 +74,7 @@ function PersonalVestingPage() {
     }
 
     const handleWithdraw = () => {
-        releaseAmaunt(metaMaskAccount).then(res => { 
+        releaseAmaunt(metaMaskAccount).then(res => {
         }).catch(err => {
             console.log(err)
         })
@@ -84,8 +86,8 @@ function PersonalVestingPage() {
                 setContractSymbol(res)
             })
 
-            getBeneficiary(metaMaskAccount).then(res => { 
-                
+            getBeneficiary(metaMaskAccount).then(res => {
+
                 const approved = res.some(x => {
                     const date = new Date(x[1] * 1000);
                     const today = new Date();
@@ -95,7 +97,7 @@ function PersonalVestingPage() {
                 if (approved) {
                     setHasAmountToWithraw(true)
                 }
-                
+
                 const formattedRes = res.map(x => {
                     const amount = x[0] / 10 ** 18
                     const date = new Date(x[1] * 1000).toLocaleDateString();
@@ -178,9 +180,9 @@ function PersonalVestingPage() {
 
                                                 <p className='current-wallet' >Your current wallet is: <span>{state.metaMaskWallet}</span></p>
                                                 <p className='current-wallet mobile' >Your current wallet is:
-                                                   
 
-                                                        <span>{`${state.metaMaskWallet.substring(0, 5)}...${state.metaMaskWallet.substr(state.metaMaskWallet.length - 5)}`}</span>
+
+                                                    <span>{`${state.metaMaskWallet.substring(0, 5)}...${state.metaMaskWallet.substr(state.metaMaskWallet.length - 5)}`}</span>
                                                 </p>
 
                                                 <div className="widget-change-wallet-address">
@@ -188,9 +190,9 @@ function PersonalVestingPage() {
 
                                                     <button className="btn" onClick={handleChangeBeneficiaryWallet}>
                                                         {changeWalletLoader && <div className="loader"></div>}
-                                                        {!changeWalletLoader && <>Change</>} 
-                                                        
-                                                        </button>
+                                                        {!changeWalletLoader && <>Change</>}
+
+                                                    </button>
 
                                                     {widgetCheckAddress &&
                                                         <p>Please enter valid address!</p>

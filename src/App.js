@@ -15,13 +15,14 @@ import { reducer, initialState } from "./context";
 import { AppContext } from "./context";
 
 
-function App() {
-    const [state, dispatch] = useReducer(reducer, initialState);
 
+function App() { 
+    const [state, dispatch] = useReducer(reducer, initialState);
+  
     return (
         <AppContext.Provider value={{ state, dispatch }} >
            
-            <BrowserRouter basename='/ptrn/'>
+            <BrowserRouter basename={'/test'}>
                 <Routes>
                     <Route exact path="/" element={<Home />} />
                     <Route exact path="/personal-vesting" element={<PersonalVestingPage />} />
