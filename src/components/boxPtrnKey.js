@@ -23,7 +23,7 @@ function BoxPtrnKey({
                 </div>
 
                 <p className="text_center list-buttons">
-                    <button onClick={handlecheckBalance} className="btn  " id="btn-check-balance">
+                    <button disabled={balanceLoader} onClick={handlecheckBalance} className="btn  " id="btn-check-balance">
                         {balanceLoader && <div className="loader"></div>}
                         {!balanceLoader && <>CHECK BALANCE</>}
                     </button>

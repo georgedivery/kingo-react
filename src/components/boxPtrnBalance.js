@@ -66,7 +66,7 @@ function BoxPtrnBalance({
                                 </div>
 
                                 <p className="text_right">
-                                    <button onClick={handleWithdraw} className="btn" id="btn-withdraw">
+                                    <button onClick={handleWithdraw} disabled={withdrawLoader} className="btn" id="btn-withdraw">
                                         {withdrawLoader && <div className="loader"></div>}
                                         {!withdrawLoader && <>WITHDRAW</>} 
                                     </button>
