@@ -4,7 +4,7 @@ import backgroundImage from '../assets/images/Rectangle-1508.jpg';
 
 import { AppContext } from "../context";
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 
 import BoxConnectWallet from '../components/boxConnectWallet';
 import BoxPtrnBalance from '../components/boxPtrnBalance';
@@ -36,10 +36,10 @@ function Home() {
     const [balanceLoader, setBalanceLoader] = useState(false);
     const [withdrawLoader, setWithdrawLoader] = useState(false);
     const [errPtrnKey, setErrPtrnKey] = useState(false);
-  
+
     useEffect(() => {
         getContractPTRNAddress()
-            .then(res => { 
+            .then(res => {
                 setContractPTRNAddress(res.data)
 
                 if (res.status === 503) {
@@ -47,42 +47,26 @@ function Home() {
                 }
             })
             .catch(err => {
-                setServerErr(true) 
+                setServerErr(true)
             })
     }, [])
 
-    useEffect(() => {
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum.on('accountsChanged', function (accounts) {
-                console.log('accountsChanged')
-                setMetaMaskAccount(accounts[0])
-                dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
-                checkBeneficiary(accounts[0])
+    const checkBeneficiary = useCallback((metaMaskAccount) => {
+        getBeneficiary(metaMaskAccount).then(res => {
+            dispatch({
+                type: "HAS_BENEFICIARY_LIST",
+                payload: true
+            });
+        }).catch((err) => {
+            dispatch({
+                type: "HAS_BENEFICIARY_LIST",
+                payload: false
+            });
+            localStorage.setItem('has_beneficiary_list', false);
+        })
+    }, [dispatch])
 
-            })
-        }
-    }, [])
-
-    useEffect(() => {
-        if (typeof window.ethereum !== 'undefined') {
-            window.ethereum
-                .request({ method: 'eth_accounts' })
-                .then(accounts => {
-                    if (accounts[0] === localStorage.getItem('wallet')) {
-                        connectToMetaMask()
-                    } else {
-                        localStorage.removeItem('wallet')
-                        dispatch({ type: "METAMASK_WALLET", payload: '' });
-                        localStorage.setItem('has_beneficiary_list', false);
-                    }
-                })
-                .catch((err) => {
-
-                })
-        }
-    }, [])
-
-    const connectToMetaMask = () => {
+    const connectToMetaMask = useCallback(() => {
         if (typeof window.ethereum !== 'undefined') {
             window.ethereum
                 .request({ method: 'eth_requestAccounts' })
@@ -108,7 +92,40 @@ function Home() {
             setPopupInstallMetamask(true)
             console.log('err')
         }
-    }
+    }, [checkBeneficiary, dispatch])
+
+    useEffect(() => {
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', function (accounts) {
+                console.log('accountsChanged')
+                setMetaMaskAccount(accounts[0])
+                dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
+                checkBeneficiary(accounts[0])
+
+            })
+        }
+    }, [checkBeneficiary, dispatch])
+
+    useEffect(() => {
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum
+                .request({ method: 'eth_accounts' })
+                .then(accounts => {
+                    if (accounts[0] === localStorage.getItem('wallet')) {
+                        connectToMetaMask()
+                    } else {
+                        localStorage.removeItem('wallet')
+                        dispatch({ type: "METAMASK_WALLET", payload: '' });
+                        localStorage.setItem('has_beneficiary_list', false);
+                    }
+                })
+                .catch((err) => {
+
+                })
+        }
+    }, [connectToMetaMask, dispatch])
+
+   
 
     const handleClosePopupOpenMetaMask = () => {
         setPopupOpenlMetamask(false);
@@ -119,20 +136,7 @@ function Home() {
         setBoxPtrnBalance(false)
     }
 
-    const checkBeneficiary = (metaMaskAccount) => {
-        getBeneficiary(metaMaskAccount).then(res => { 
-            dispatch({
-                type: "HAS_BENEFICIARY_LIST",
-                payload: true
-            });
-        }).catch((err) => {
-            dispatch({
-                type: "HAS_BENEFICIARY_LIST",
-                payload: false
-            });
-            localStorage.setItem('has_beneficiary_list', false);
-        })
-    }
+
 
     const handleClosePopupInstallMetamask = () => {
         setPopupInstallMetamask(false);
