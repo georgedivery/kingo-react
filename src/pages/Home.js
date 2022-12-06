@@ -36,10 +36,10 @@ function Home() {
     const [balanceLoader, setBalanceLoader] = useState(false);
     const [withdrawLoader, setWithdrawLoader] = useState(false);
     const [errPtrnKey, setErrPtrnKey] = useState(false);
-
+  
     useEffect(() => {
         getContractPTRNAddress()
-            .then(res => {
+            .then(res => { 
                 setContractPTRNAddress(res.data)
 
                 if (res.status === 503) {
@@ -47,7 +47,7 @@ function Home() {
                 }
             })
             .catch(err => {
-                setServerErr(true)
+                setServerErr(true) 
             })
     }, [])
 
@@ -120,7 +120,7 @@ function Home() {
     }
 
     const checkBeneficiary = (metaMaskAccount) => {
-        getBeneficiary(metaMaskAccount).then(res => {
+        getBeneficiary(metaMaskAccount).then(res => { 
             dispatch({
                 type: "HAS_BENEFICIARY_LIST",
                 payload: true

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const getBalance = (ptrnKey) => {
-    return axios.get('https://ptrn-backend.herokuapp.com/api/balance/', {
+    return axios.get(`${process.env.REACT_APP_API_URL}/balance/`, {
         headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',

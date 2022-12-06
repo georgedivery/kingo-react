@@ -5,7 +5,7 @@ const getWithdraw = (ptrnKey, metaMaskAccount) => {
 
     return axios({
         method: 'post',
-        url: 'https://ptrn-backend.herokuapp.com/api/withdraw/',
+        url: `${process.env.REACT_APP_API_URL}/withdraw/`,
         headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
