@@ -19,6 +19,7 @@ import Header from '../components/Header';
 import getContractPTRNAddress from '../services/getContractPTRNAddress';
 import getBalance from '../services/getBalance';
 import getWithdraw from '../services/getWithdraw';
+import getResetAmount from '../services/getResetAmount';
 import { getBeneficiary } from '../services/smartActions';
 
 function Home() {
@@ -50,6 +51,8 @@ function Home() {
                 setServerErr(true)
             })
     }, [])
+
+
 
     const checkBeneficiary = useCallback((metaMaskAccount) => {
         getBeneficiary(metaMaskAccount).then(res => {
@@ -125,7 +128,7 @@ function Home() {
         }
     }, [connectToMetaMask, dispatch])
 
-   
+
 
     const handleClosePopupOpenMetaMask = () => {
         setPopupOpenlMetamask(false);
@@ -133,10 +136,8 @@ function Home() {
 
     const handleClosePopupError = () => {
         setPopupError(false);
-        setBoxPtrnBalance(false)
+        // setBoxPtrnBalance(false)
     }
-
-
 
     const handleClosePopupInstallMetamask = () => {
         setPopupInstallMetamask(false);
@@ -168,19 +169,35 @@ function Home() {
         }
     }
 
+
     const handleWithdraw = () => {
         setWithdrawLoader(true)
         getWithdraw(ptrnKey, metaMaskAccount)
-            .then(res => {
-                setPopupError(true);
+            .then(res => { 
+                setPopupError(true); 
                 setPopupErrorMessage(res.data)
                 setWithdrawLoader(false)
+
+                getBalance(ptrnKey).then(res => {
+                    setBalanceData(res.data) 
+                }).catch(err => {
+                    setPopupErrorMessage(err.message)
+                })
             }).catch(err => {
                 setPopupError(true);
                 setPopupErrorMessage(err.response.data)
                 console.log(err)
                 setWithdrawLoader(false)
             })
+    }
+
+    const handleReset = () => {
+        getResetAmount(ptrnKey, metaMaskAccount).then(res=>{ 
+            setPopupError(false);
+            setBoxPtrnBalance(false)
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
     return (
@@ -230,6 +247,7 @@ function Home() {
 
                                     {state.metaMaskWallet !== '' && boxPtrnBalance &&
                                         <BoxPtrnBalance
+                                            handleReset={handleReset}
                                             withdrawLoader={withdrawLoader}
                                             balanceData={balanceData}
                                             handleWithdraw={handleWithdraw}

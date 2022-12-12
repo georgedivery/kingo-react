@@ -90,8 +90,8 @@ function PersonalVestingPage() {
                 const approved = res.some(x => {
                     const date = new Date(x[1] * 1000);
                     const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    return date > today && x[3] === '1';
+                    today.setHours(0, 0, 0, 0); 
+                    return date < today && x[3] === '1' && x[2] === '0';
                 }) 
                 if (approved) {
                     setHasAmountToWithraw(true)

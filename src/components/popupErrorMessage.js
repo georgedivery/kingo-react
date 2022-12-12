@@ -3,21 +3,19 @@ function PopupErrorMessage({
     message,
     handleClosePopupError,
     serverErr
-}) {
+}) { 
     return (
         <div className="popup-install-metamask popup-open-metamask popup-error active">
             <div className="popup-content">
                 <div className="popup-content-inner">
-                    <h4 className="text_center">
-                        {serverErr
-                            ? <h4 className="text_center">
-                                Service temporary unavailable.
-                            </h4>
-                            : <h4 className="text_center">
-                                {message}
-                            </h4>
-                        }
-                    </h4>
+                    {serverErr
+                        ? <h4 className="text_center">
+                            Service temporary unavailable.
+                        </h4>
+                        : <h4 className="text_center">
+                            {message}
+                        </h4>
+                    }
 
                     <p className="text_center">
                         <button onClick={handleClosePopupError} className="btn btn_small close">

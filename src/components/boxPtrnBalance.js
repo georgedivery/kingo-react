@@ -1,8 +1,9 @@
-
+import { useState, useEffect } from "react";
 function BoxPtrnBalance({
     handleWithdraw,
     balanceData,
-    withdrawLoader
+    withdrawLoader,
+    handleReset
 }) {
 
     let {
@@ -12,6 +13,7 @@ function BoxPtrnBalance({
         hours_to_next_payment,
         minutes_to_next_payment
     } = balanceData;
+
 
     return (
         <>
@@ -66,9 +68,15 @@ function BoxPtrnBalance({
                                 </div>
 
                                 <p className="text_right">
-                                    <button onClick={handleWithdraw} disabled={withdrawLoader} className="btn" id="btn-withdraw">
+                                    <button onClick={handleWithdraw} disabled={withdrawLoader || balance_for_next_withdraw < 0 || pending_withdraw > 0} className="btn" id="btn-withdraw">
                                         {withdrawLoader && <div className="loader"></div>}
-                                        {!withdrawLoader && <>WITHDRAW</>} 
+                                        {!withdrawLoader && <>WITHDRAW</>}
+                                    </button>
+                                </p>
+
+                                <p className="text_right">
+                                    <button onClick={handleReset} className="btn btn-err" id="btn-withdraw">
+                                        reset
                                     </button>
                                 </p>
                             </div>

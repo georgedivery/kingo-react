@@ -436,6 +436,16 @@ blockquote:last-child {
 	font-weight: 500;
 }
 
+.btn:disabled {
+	background: #e3e3e3;
+	color: #000;
+}
+
+.btn:disabled:hover {
+	background: #e3e3e3;
+	color: #000;
+}
+
 .btn:hover {
 	background: #40a72e;
 }
@@ -443,12 +453,22 @@ blockquote:last-child {
 .btn_small {
 	padding: 10px 20px;
 }
+.btn-connect-metamask:disabled  {
+	 background: #61C34F;
+	 color: #fff;
+}
 
+.btn-connect-metamask:disabled:hover  {
+	background: #61C34F;
+	color: #fff;
+}
 .btn-connect-metamask span {
 	position: relative;
 
 	display: inline-block;
 }
+
+.btn-err { background: red; }
 
 @media screen and (max-width:1600px) {
 	.btn {
@@ -901,10 +921,10 @@ blockquote:last-child {
 	text-align: left;
 	font-weight: 300;
 	font-size: 15px;
-	padding: 2px 0; 
+	padding: 2px 0;
 }
 
- 
+
 
 .section-box .list-buttons {
 	display: flex;
