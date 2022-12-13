@@ -4,7 +4,7 @@ import backgroundImage from '../assets/images/Rectangle-1508.jpg';
 
 import { AppContext } from "../context";
 
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback, useContext, memo } from 'react';
 
 import BoxConnectWallet from '../components/boxConnectWallet';
 import BoxPtrnBalance from '../components/boxPtrnBalance';
@@ -272,6 +272,6 @@ function Home() {
     );
 }
 
-export default Home;
+export default memo(Home);
 
 

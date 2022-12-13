@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+
 function BoxPtrnBalance({
     handleWithdraw,
     balanceData,
@@ -74,11 +74,11 @@ function BoxPtrnBalance({
                                     </button>
                                 </p>
 
-                                <p className="text_right">
+                                {/* <p className="text_right">
                                     <button onClick={handleReset} className="btn btn-err" id="btn-withdraw">
                                         reset
                                     </button>
-                                </p>
+                                </p> */}
                             </div>
                         </div>
                     </div>

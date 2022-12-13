@@ -22,7 +22,7 @@ function App() {
     return (
         <AppContext.Provider value={{ state, dispatch }} >
            
-            <BrowserRouter basename={'/test'}>
+            <BrowserRouter basename={'/ptrn'}>
                 <Routes>
                     <Route exact path="/" element={<Home />} />
                     <Route exact path="/personal-vesting" element={<PersonalVestingPage />} />
