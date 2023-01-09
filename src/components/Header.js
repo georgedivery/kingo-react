@@ -22,17 +22,22 @@ function Header({ connectToMetaMask }) {
                     <div id="navbar" className="menu-top-container">
                         <ul id="menu-top" className="nav">
                             <li id="menu-item-29" className="menu-item">
-                                <Link to={'/'}>Home</Link>
+                                <Link onClick={() => window.location.reload()} to={'/'}>Home</Link>
                             </li>
 
                             <li>
                                 <a href="https://kingo.ai/instructions/" className='menu-link' rel="noreferrer" target="_blank">Instructions</a>
                             </li>
 
+                            <li>
+                                <a href="https://quickswap.exchange/#/swap?swapIndex=0&currency0=0x324165Db0A8D41f2eEBb38d68E75Edd5F8f48963&currency1=0xc2132D05D31c914a87C6611C10748AEb04B58e8F" className='menu-link' rel="noreferrer" target="_blank">swap</a>
+                            </li>
+
                             {state.isInBeneficiaryList && <li>
                                 <Link to={'/personal-vesting'}>PERSONAL VESTING</Link>
 
-                            </li>}
+                            </li>} 
+ 
                         </ul>
                     </div>
 

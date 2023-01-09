@@ -380,6 +380,11 @@ blockquote:last-child {
 .text_right {
 	text-align: right;
 }
+.text_left {
+	text-align: left;
+}
+
+.max-w-250 { width: 250px; display: inline-block; }
 
 
 .field {
@@ -843,6 +848,14 @@ blockquote:last-child {
 	margin: 0 -20px;
 }
 
+.price_to_dolar {  
+	font-size: 15px;
+	display: block;
+	margin-top: -10px;
+	font-weight: 500;
+	color: #686868;
+ }
+
 .section-box .withdraws-cols .col-1of2 {
 	width: 50%;
 	padding: 0 20px;
@@ -859,10 +872,10 @@ blockquote:last-child {
 	margin-bottom: 10px;
 }
 
-.section-box .available-withdraw p:last-child {
+/* .section-box .available-withdraw p:last-child {
 	font-weight: 500;
 	color: #686868;
-}
+} */
 
 .section-box .pending-withdraw {
 	max-width: 300px;

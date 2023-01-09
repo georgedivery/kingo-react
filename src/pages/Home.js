@@ -37,6 +37,7 @@ function Home() {
     const [balanceLoader, setBalanceLoader] = useState(false);
     const [withdrawLoader, setWithdrawLoader] = useState(false);
     const [errPtrnKey, setErrPtrnKey] = useState(false);
+    const  BALANCE_ERROR_MESSAGE = "Unable to connect to validation server. Please try again later!"
 
     useEffect(() => {
         getContractPTRNAddress()
@@ -45,7 +46,7 @@ function Home() {
 
                 if (res.status === 503) {
                     setServerErr(true)
-                }
+                }  
             })
             .catch(err => {
                 setServerErr(true)
@@ -158,11 +159,11 @@ function Home() {
             getBalance(ptrnKey).then(res => {
                 setBoxPtrnBalance(true)
                 setBalanceLoader(false)
-                setBalanceData(res.data)
-            }).catch(err => {
+                setBalanceData(res.data) 
+            }).catch(err => { 
                 setPopupError(true);
-                setBalanceLoader(false)
-                setPopupErrorMessage(err.message)
+                setBalanceLoader(false) 
+                setPopupErrorMessage(err.response.data) 
             })
         } else {
             setErrPtrnKey(true)
@@ -181,12 +182,11 @@ function Home() {
                 getBalance(ptrnKey).then(res => {
                     setBalanceData(res.data) 
                 }).catch(err => {
-                    setPopupErrorMessage(err.message)
+                    setPopupErrorMessage(err.response.data)
                 })
             }).catch(err => {
                 setPopupError(true);
-                setPopupErrorMessage(err.response.data)
-                console.log(err)
+                setPopupErrorMessage(err.response.data) 
                 setWithdrawLoader(false)
             })
     }
