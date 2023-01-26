@@ -1,9 +1,9 @@
 
 function PopupErrorMessage({
     message,
-    serverErr,
-    handleClosePopupError
-}) {
+    handleClosePopupError,
+    serverErr
+}) { 
     return (
         <div className="popup-install-metamask popup-open-metamask popup-error active">
             <div className="popup-content">

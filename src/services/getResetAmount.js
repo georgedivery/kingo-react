@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const getWithdraw = (ptrnKey, metaMaskAccount) => {
+const getResetAmount = (ptrnKey, metaMaskAccount) => {
     // console.log(metaMaskAccount) 
 
     return axios({
         method: 'post',
-        url: `${process.env.REACT_APP_API_URL}/withdraw/`,
+        url: `${process.env.REACT_APP_API_URL}/reset/`,
         headers: {
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
@@ -15,4 +15,4 @@ const getWithdraw = (ptrnKey, metaMaskAccount) => {
     })
 }
 
-export default getWithdraw;
+export default getResetAmount;

@@ -2,7 +2,8 @@
 function BoxPtrnKey({
     handlePtrnKeyInputChange,
     handlecheckBalance,
-    handleWithdraw
+    balanceLoader,
+    errPtrnKey
 }) {
 
     return (
@@ -14,19 +15,18 @@ function BoxPtrnKey({
 
                 <div className="form-control">
                     <input type="text" onChange={handlePtrnKeyInputChange} className="field" id="ptrn-key-input" />
-                    <span className="error">
-                        Please add valid key.
-                    </span>
+                    {errPtrnKey &&
+                        <span className="error">
+                            Please add valid key.
+                        </span>
+                    }
                 </div>
 
                 <p className="text_center list-buttons">
-                    <button onClick={handlecheckBalance} className="btn  " id="btn-check-balance">
-                        CHECK BALANCE
+                    <button disabled={balanceLoader} onClick={handlecheckBalance} className="btn  " id="btn-check-balance">
+                        {balanceLoader && <div className="loader"></div>}
+                        {!balanceLoader && <>CHECK BALANCE</>}
                     </button>
-
-                    {/* <button onClick={handleWithdraw} className="btn btn_small" id="btn-withdraw">
-                        WITHDRAW
-                    </button> */}
                 </p>
             </div>
         </div>
