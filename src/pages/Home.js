@@ -15,12 +15,14 @@ import PopupErrorMessage from '../components/popupErrorMessage';
 import PopupOpenMetaMask from '../components/popupOpenMetaMask';
 
 import Header from '../components/Header';
+import BtnAddToken from '../components/btnAddToken'
 
 import getContractPTRNAddress from '../services/getContractPTRNAddress';
 import getBalance from '../services/getBalance';
 import getWithdraw from '../services/getWithdraw';
 import getResetAmount from '../services/getResetAmount';
 import { getBeneficiary } from '../services/smartActions';
+import addPTRNdata from '../services/assetAdder';
 
 function Home() {
     const { state, dispatch } = useContext(AppContext);
@@ -37,7 +39,7 @@ function Home() {
     const [balanceLoader, setBalanceLoader] = useState(false);
     const [withdrawLoader, setWithdrawLoader] = useState(false);
     const [errPtrnKey, setErrPtrnKey] = useState(false);
-    const  BALANCE_ERROR_MESSAGE = "Unable to connect to validation server. Please try again later!"
+    //const BALANCE_ERROR_MESSAGE = "Unable to connect to validation server. Please try again later!"
 
     useEffect(() => {
         getContractPTRNAddress()
@@ -46,14 +48,12 @@ function Home() {
 
                 if (res.status === 503) {
                     setServerErr(true)
-                }  
+                }
             })
             .catch(err => {
                 setServerErr(true)
             })
     }, [])
-
-
 
     const checkBeneficiary = useCallback((metaMaskAccount) => {
         getBeneficiary(metaMaskAccount).then(res => {
@@ -99,13 +99,26 @@ function Home() {
     }, [checkBeneficiary, dispatch])
 
     useEffect(() => {
+        // addPTRNdata();
+
         if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('chainChanged', function (networkId) {
+                setTimeout(() => {
+                    if (networkId !== '0x89') {
+                        setPopupError(true)
+                        setPopupErrorMessage('Please connect to Polygon network!')
+                    } else {
+                        setPopupError(false)
+                        setPopupErrorMessage('')
+                    }
+                }, 10)
+            })
+
             window.ethereum.on('accountsChanged', function (accounts) {
                 console.log('accountsChanged')
                 setMetaMaskAccount(accounts[0])
                 dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
                 checkBeneficiary(accounts[0])
-
             })
         }
     }, [checkBeneficiary, dispatch])
@@ -115,18 +128,24 @@ function Home() {
             window.ethereum
                 .request({ method: 'eth_accounts' })
                 .then(accounts => {
-                    if (accounts[0] === localStorage.getItem('wallet')) {
-                        connectToMetaMask()
+                    if (window.ethereum.networkVersion === '137') {
+                        if (accounts[0] === localStorage.getItem('wallet')) {
+                            connectToMetaMask()
+                        } else {
+                            localStorage.removeItem('wallet')
+                            dispatch({ type: "METAMASK_WALLET", payload: '' });
+                            localStorage.setItem('has_beneficiary_list', false);
+                        }
+                        setPopupError(false)
+                        setPopupErrorMessage('')
                     } else {
-                        localStorage.removeItem('wallet')
-                        dispatch({ type: "METAMASK_WALLET", payload: '' });
-                        localStorage.setItem('has_beneficiary_list', false);
+                        setPopupError(true)
+                        setPopupErrorMessage('Please connect to Polygon network!')
                     }
                 })
-                .catch((err) => {
-
-                })
+                .catch((err) => { })
         }
+
     }, [connectToMetaMask, dispatch])
 
 
@@ -159,11 +178,11 @@ function Home() {
             getBalance(ptrnKey).then(res => {
                 setBoxPtrnBalance(true)
                 setBalanceLoader(false)
-                setBalanceData(res.data) 
-            }).catch(err => { 
+                setBalanceData(res.data)
+            }).catch(err => {
                 setPopupError(true);
-                setBalanceLoader(false) 
-                setPopupErrorMessage(err.response.data) 
+                setBalanceLoader(false)
+                setPopupErrorMessage(err.response.data)
             })
         } else {
             setErrPtrnKey(true)
@@ -174,28 +193,28 @@ function Home() {
     const handleWithdraw = () => {
         setWithdrawLoader(true)
         getWithdraw(ptrnKey, metaMaskAccount)
-            .then(res => { 
-                setPopupError(true); 
+            .then(res => {
+                setPopupError(true);
                 setPopupErrorMessage(res.data)
                 setWithdrawLoader(false)
 
                 getBalance(ptrnKey).then(res => {
-                    setBalanceData(res.data) 
+                    setBalanceData(res.data)
                 }).catch(err => {
                     setPopupErrorMessage(err.response.data)
                 })
             }).catch(err => {
                 setPopupError(true);
-                setPopupErrorMessage(err.response.data) 
+                setPopupErrorMessage(err.response.data)
                 setWithdrawLoader(false)
             })
     }
 
     const handleReset = () => {
-        getResetAmount(ptrnKey, metaMaskAccount).then(res=>{ 
+        getResetAmount(ptrnKey, metaMaskAccount).then(res => {
             setPopupError(false);
             setBoxPtrnBalance(false)
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         })
     }
@@ -216,13 +235,18 @@ function Home() {
                                         <img src={pathearnLogo} alt="#" />
                                         PATHEARN DASHBOARD
                                     </h2>
+                                    {(state.metaMaskWallet && contractPTRNAddress) &&
+                                        <BtnAddToken
+                                            addToken={addPTRNdata}
+                                            contractAddress={(contractPTRNAddress && !serverErr) ? contractPTRNAddress['PTRN contract address'] : ''}
+                                        />}
 
-                                    {contractPTRNAddress && !serverErr &&
+                                    {/*contractPTRNAddress && !serverErr &&
                                         <p>
                                             {Object.keys(contractPTRNAddress)}: &nbsp;
                                             <span>{contractPTRNAddress['PTRN contract address']}</span>
                                         </p>
-                                    }
+                                    */}
 
                                     {serverErr &&
                                         <p>
@@ -235,9 +259,9 @@ function Home() {
 
                                 <div className="section-box-wrapper">
 
-                                    {state.metaMaskWallet === '' && <BoxConnectWallet metaMaskAccount={state.metaMaskWallet} connectToMetaMask={connectToMetaMask} />}
+                                    {(state.metaMaskWallet === undefined || state.metaMaskWallet === '') && <BoxConnectWallet metaMaskAccount={state.metaMaskWallet} connectToMetaMask={connectToMetaMask} />}
 
-                                    {state.metaMaskWallet !== '' && boxPtrnBalance === false &&
+                                    {(state.metaMaskWallet !== undefined && state.metaMaskWallet !== '' && boxPtrnBalance === false && !serverErr) &&
                                         <BoxPtrnKey
                                             balanceLoader={balanceLoader}
                                             errPtrnKey={errPtrnKey}

@@ -8,7 +8,7 @@ import { getSymbol } from '../services/smartActions';
 import { releaseAmaunt } from '../services/smartActions';
 import { changeBeneficiaryWallet } from '../services/smartActions';
 import { checkWallet } from '../services/smartActions';
-
+import PageLoader from '../components/pageLoader';
 
 import { AppContext } from "../context";
 
@@ -21,6 +21,7 @@ function PersonalVestingPage() {
     const [widgetCheckAddress, setWidgetCheckAddress] = useState(false);
     const [hasAmountToWithraw, setHasAmountToWithraw] = useState(false);
     const [changeWalletLoader, setChangeWalletLoader] = useState(false);
+    const [pageLoader, setPageLoader] = useState(false);
 
     const navigate = useNavigate();
 
@@ -31,7 +32,24 @@ function PersonalVestingPage() {
     }, [state.isInBeneficiaryList])
 
     useEffect(() => {
+
+        if (window.ethereum.chainId !== '0x89') {
+            navigate("/");
+        }
+    }, [])
+
+
+    useEffect(() => {
         if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('chainChanged', function (networkId) {
+                console.log(networkId)
+                setTimeout(() => {
+                    if (networkId !== '0x89') {
+                        navigate("/");
+                    }
+                }, 10)
+            })
+
             window.ethereum.on('accountsChanged', function (accounts) {
                 console.log('accountsChanged')
                 setMetaMaskAccount(accounts[0])
@@ -61,7 +79,7 @@ function PersonalVestingPage() {
             if (!res) {
                 setWidgetCheckAddress(true)
             } else {
-                setWidgetCheckAddress(true)
+                setWidgetCheckAddress(false)
                 changeBeneficiaryWallet(metaMaskAccount, newWallet)
                     .then(res => {
                         setChangeWalletLoader(false)
@@ -73,10 +91,17 @@ function PersonalVestingPage() {
         })
     }
 
+
     const handleWithdraw = () => {
+        setPageLoader(true)
         releaseAmaunt(metaMaskAccount).then(res => {
+            console.log(res)
+            window.location.reload()
+            setPageLoader(false)
         }).catch(err => {
             console.log(err)
+            window.location.reload()
+            setPageLoader(false)
         })
     }
 
@@ -86,15 +111,18 @@ function PersonalVestingPage() {
                 setContractSymbol(res)
             })
 
-            getBeneficiary(metaMaskAccount).then(res => { 
+            getBeneficiary(metaMaskAccount).then(res => {
                 const approved = res.some(x => {
                     const date = new Date(x[1] * 1000);
                     const today = new Date();
-                    today.setHours(0, 0, 0, 0); 
+                    today.setHours(0, 0, 0, 0);
                     return date < today && x[3] === '1' && x[2] === '0';
-                }) 
+                })
+                
                 if (approved) {
                     setHasAmountToWithraw(true)
+                } else { 
+                    setHasAmountToWithraw(false)
                 }
 
                 const formattedRes = res.map(x => {
@@ -170,6 +198,7 @@ function PersonalVestingPage() {
                                                         withdraw
                                                     </button>
                                                 }
+
                                             </div>
 
                                             <div className="section-change-wallet">
@@ -210,6 +239,8 @@ function PersonalVestingPage() {
 
 
                 </div>
+
+                {pageLoader && <PageLoader />}
 
             </div>
         </div>

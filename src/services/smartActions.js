@@ -3,7 +3,9 @@ import contract from './contract';
 
 export const getBeneficiary = async (userAddress) => {
     const res = contract.then(x => {
-        return x.methods.beneficiary(userAddress).call()
+        return x.methods.beneficiary(userAddress).call({
+            from: userAddress
+        })
     })
     return res;
 }

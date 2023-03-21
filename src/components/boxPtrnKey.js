@@ -9,17 +9,20 @@ function BoxPtrnKey({
     return (
         <div className="section-box section-pathearn-box active" id="ptrn-key">
             <div className="section-box-inner">
-                <h3 className="text_center">
-                    Enter your PTRN Key
-                </h3>
+                <h3 className="text_center">Enter your UPI</h3>
 
                 <div className="form-control">
-                    <input type="text" onChange={handlePtrnKeyInputChange} className="field" id="ptrn-key-input" />
-                    {errPtrnKey &&
-                        <span className="error">
-                            Please add valid key.
-                        </span>
-                    }
+                    <input
+                        type="password"
+                        onChange={(e) => {
+                            handlePtrnKeyInputChange(e);
+                        }}
+                        className="field"
+                        id="ptrn-key-input"
+                    />
+                    {errPtrnKey && (
+                        <span className="error">Please add valid key.</span>
+                    )}
                 </div>
 
                 <p className="text_center list-buttons">

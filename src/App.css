@@ -380,11 +380,15 @@ blockquote:last-child {
 .text_right {
 	text-align: right;
 }
+
 .text_left {
 	text-align: left;
 }
 
-.max-w-250 { width: 250px; display: inline-block; }
+.max-w-250 {
+	width: 250px;
+	display: inline-block;
+}
 
 
 .field {
@@ -458,22 +462,26 @@ blockquote:last-child {
 .btn_small {
 	padding: 10px 20px;
 }
-.btn-connect-metamask:disabled  {
-	 background: #61C34F;
-	 color: #fff;
-}
 
-.btn-connect-metamask:disabled:hover  {
+.btn-connect-metamask:disabled {
 	background: #61C34F;
 	color: #fff;
 }
+
+.btn-connect-metamask:disabled:hover {
+	background: #61C34F;
+	color: #fff;
+}
+
 .btn-connect-metamask span {
 	position: relative;
 
 	display: inline-block;
 }
 
-.btn-err { background: red; }
+.btn-err {
+	background: red;
+}
 
 @media screen and (max-width:1600px) {
 	.btn {
@@ -848,13 +856,13 @@ blockquote:last-child {
 	margin: 0 -20px;
 }
 
-.price_to_dolar {  
+.price_to_dolar {
 	font-size: 15px;
 	display: block;
 	margin-top: -10px;
 	font-weight: 500;
 	color: #686868;
- }
+}
 
 .section-box .withdraws-cols .col-1of2 {
 	width: 50%;
@@ -1088,7 +1096,6 @@ blockquote:last-child {
 
 }
 
-
 .loader {
 	border: 3px solid #f3f3f3;
 	border-radius: 50%;
@@ -1120,6 +1127,34 @@ blockquote:last-child {
 	100% {
 		transform: rotate(360deg);
 	}
+}
+
+.pageLoader {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	z-index: 2;
+}
+
+.pageLoader .page-loader-inner {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 30px;
+	background: rgba(255, 255, 255, .5);
+}
+
+.pageLoader .loader {
+	border: 8px solid #fff;
+	border-radius: 50%;
+	border-top: 8px solid #40a72e;
+	width: 60px;
+	display: inline-block;
+	height: 60px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, .4), inset 0px 0px 7px rgba(0, 0, 0, .4);
 }
 
 .btn-burger {

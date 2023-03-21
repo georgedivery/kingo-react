@@ -3,7 +3,7 @@ function PopupErrorMessage({
     message,
     handleClosePopupError,
     serverErr
-}) { 
+}) {
     return (
         <div className="popup-install-metamask popup-open-metamask popup-error active">
             <div className="popup-content">
@@ -16,11 +16,13 @@ function PopupErrorMessage({
                             {message}
                         </h4>
                     }
-                    <p className="text_center">
-                        <button onClick={handleClosePopupError} className="btn btn_small close">
-                            OK
-                        </button>
-                    </p>
+                    {message !== 'Please connect to Polygon network!' &&
+                        <p className="text_center">
+                            <button onClick={handleClosePopupError} className="btn btn_small close">
+                                OK
+                            </button>
+                        </p>
+                    }
                 </div>
             </div>
         </div>

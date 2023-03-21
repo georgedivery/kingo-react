@@ -22,7 +22,7 @@ function Header({ connectToMetaMask }) {
                     <div id="navbar" className="menu-top-container">
                         <ul id="menu-top" className="nav">
                             <li id="menu-item-29" className="menu-item">
-                                <Link onClick={() => window.location.reload()} to={'/'}>Home</Link>
+                            <a href="https://kingo.ai/" className='menu-link' rel="noreferrer"  >Home</a>
                             </li>
 
                             <li>
