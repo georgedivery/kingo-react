@@ -20,7 +20,7 @@ function App() {
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
-      <BrowserRouter basename="/test">
+      <BrowserRouter basename={`/${process.env.REACT_APP_HOME_DIR}`}>
         <React.Suspense fallback={<PageLoader/>}>
           <Routes>
             <Route exact path="/" element={<Home />} />

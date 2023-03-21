@@ -1,5 +1,5 @@
  
-function PageLoader({}) {
+function PageLoader() {
 
     return (
         <div className="pageLoader" >

@@ -23,20 +23,19 @@ function PersonalVestingPage() {
     const [changeWalletLoader, setChangeWalletLoader] = useState(false);
     const [pageLoader, setPageLoader] = useState(false);
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         if (state.isInBeneficiaryList === false) {
             navigate("/");
         }
-    }, [state.isInBeneficiaryList])
+    }, [])
 
     useEffect(() => {
-
         if (window.ethereum.chainId !== '0x89') {
             navigate("/");
         }
-    }, [])
+    })
 
 
     useEffect(() => {
@@ -52,12 +51,18 @@ function PersonalVestingPage() {
 
             window.ethereum.on('accountsChanged', function (accounts) {
                 console.log('accountsChanged')
-                setMetaMaskAccount(accounts[0])
-                dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
-                checkBeneficiary(accounts[0]);
+                console.log(accounts[0])
+                if(accounts[0]) {
+                    setMetaMaskAccount(accounts[0])
+                    dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
+                    checkBeneficiary(accounts[0]); 
+                } else {
+                    navigate("/");
+                }
             })
         }
-    }, [])
+    })
+
 
     const checkBeneficiary = (metaMaskAccount) => {
         getBeneficiary(metaMaskAccount).then(res => {
@@ -118,10 +123,10 @@ function PersonalVestingPage() {
                     today.setHours(0, 0, 0, 0);
                     return date < today && x[3] === '1' && x[2] === '0';
                 })
-                
+
                 if (approved) {
                     setHasAmountToWithraw(true)
-                } else { 
+                } else {
                     setHasAmountToWithraw(false)
                 }
 

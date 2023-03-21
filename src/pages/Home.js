@@ -38,8 +38,7 @@ function Home() {
     const [contractPTRNAddress, setContractPTRNAddress] = useState();
     const [balanceLoader, setBalanceLoader] = useState(false);
     const [withdrawLoader, setWithdrawLoader] = useState(false);
-    const [errPtrnKey, setErrPtrnKey] = useState(false);
-    //const BALANCE_ERROR_MESSAGE = "Unable to connect to validation server. Please try again later!"
+    const [errPtrnKey, setErrPtrnKey] = useState(false); 
 
     useEffect(() => {
         getContractPTRNAddress()
@@ -98,9 +97,7 @@ function Home() {
         }
     }, [checkBeneficiary, dispatch])
 
-    useEffect(() => {
-        // addPTRNdata();
-
+    useEffect(() => { 
         if (typeof window.ethereum !== 'undefined') {
             window.ethereum.on('chainChanged', function (networkId) {
                 setTimeout(() => {
@@ -116,9 +113,15 @@ function Home() {
 
             window.ethereum.on('accountsChanged', function (accounts) {
                 console.log('accountsChanged')
-                setMetaMaskAccount(accounts[0])
-                dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
-                checkBeneficiary(accounts[0])
+                if(accounts[0]) {
+                    setMetaMaskAccount(accounts[0])
+                    dispatch({ type: "METAMASK_WALLET", payload: accounts[0] });
+                    checkBeneficiary(accounts[0]) 
+                } else {
+                    localStorage.removeItem('wallet')
+                    dispatch({ type: "METAMASK_WALLET", payload: '' });
+                    localStorage.setItem('has_beneficiary_list', false);
+                }
             })
         }
     }, [checkBeneficiary, dispatch])
@@ -148,15 +151,12 @@ function Home() {
 
     }, [connectToMetaMask, dispatch])
 
-
-
     const handleClosePopupOpenMetaMask = () => {
         setPopupOpenlMetamask(false);
     }
 
     const handleClosePopupError = () => {
-        setPopupError(false);
-        // setBoxPtrnBalance(false)
+        setPopupError(false); 
     }
 
     const handleClosePopupInstallMetamask = () => {
