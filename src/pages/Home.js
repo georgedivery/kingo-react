@@ -120,6 +120,7 @@ function Home() {
                 } else {
                     localStorage.removeItem('wallet')
                     dispatch({ type: "METAMASK_WALLET", payload: '' });
+                    dispatch({ type: "HAS_BENEFICIARY_LIST", payload: false });
                     localStorage.setItem('has_beneficiary_list', false);
                 }
             })
@@ -137,6 +138,7 @@ function Home() {
                         } else {
                             localStorage.removeItem('wallet')
                             dispatch({ type: "METAMASK_WALLET", payload: '' });
+                            dispatch({ type: "HAS_BENEFICIARY_LIST", payload: false });
                             localStorage.setItem('has_beneficiary_list', false);
                         }
                         setPopupError(false)
