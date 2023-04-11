@@ -1,25 +1,41 @@
-
-function PopupInstallMetaMask({
-    handleClosePopupInstallMetamask
-}) {
-
-
+function NotMetamaskMessage({ message, handleClosePopupInstallMetamask }) {
     return (
-        <div className="popup-install-metamask active">
-            <div className="popup-content">
-                <div className="popup-content-inner">
-                    <h4 className="text_center">
-                        Please Install MetaMask!
-                    </h4>
-
-                    <p className="text_center">
-                        <button onClick={handleClosePopupInstallMetamask} className="btn btn_small close">
+        <div className="popup_install_metamask active">
+            <div className="popup_content">
+                <div className="popup_content_inner">
+                    <h4 className="text_center">{message}</h4>
+                    <div className="btn_container">
+                        <button
+                            onClick={handleClosePopupInstallMetamask}
+                            className="btn btn_small close"
+                        >
                             OK
                         </button>
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
+    );
+}
+
+function RedirectToMetamask({handleClosePopupInstallMetamask}) {
+    handleClosePopupInstallMetamask();
+    window.location.href = 'https://metamask.app.link/dapp/kingo.ai/ptrn/'; 
+  };
+
+function PopupInstallMetaMask({ handleClosePopupInstallMetamask, message }) {
+
+    return (
+        <>
+            {message !== "Please intall MetaMask!"?
+            <NotMetamaskMessage
+                    handleClosePopupInstallMetamask={
+                        handleClosePopupInstallMetamask
+                    }
+                    message={message}
+                />:<RedirectToMetamask handleClosePopupInstallMetamask={handleClosePopupInstallMetamask}/>
+            }
+        </>
     );
 }
 
