@@ -1,11 +1,10 @@
-import tokenImage from "../assets/images/PTRNTokenLogo.png";
-
 
 async function addPTRNdata(e) {
     const tokenAddress = e.target.id;
-    const tokenSymbol = tokenAddress==='0x324165Db0A8D41f2eEBb38d68E75Edd5F8f48963'?"PTRN":"Unknown";
+    const tokenImage = "https://kingo.ai/ptrn/static/media/logo-token.a49708e3af153546d68e.jpg";
+    const tokenSymbol = tokenAddress === '0x324165Db0A8D41f2eEBb38d68E75Edd5F8f48963' ? "PTRN" : "Unknown";
     const tokenDecimals = 18;
-    if (!tokenAddress){
+    if (!tokenAddress) {
         return
     };
 
@@ -20,7 +19,7 @@ async function addPTRNdata(e) {
                     address: tokenAddress, // The address that the token is at.
                     symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
                     decimals: tokenDecimals, // The number of decimals in the token
-                    image: tokenSymbol === 'PTRN' ? tokenImage: null, // A string url of the token logo
+                    image: tokenSymbol === 'PTRN' ? tokenImage : null, // A string url of the token logo
                 },
             },
         });
@@ -30,7 +29,7 @@ async function addPTRNdata(e) {
         } else {
             console.log("Canceled by user!");
         }
-      
+
     } catch (error) {
         console.log(error);
     }
